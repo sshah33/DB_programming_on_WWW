@@ -1,0 +1,28 @@
+{
+  "users":{
+    "Aditya":{
+      "Password" : "mypassword",
+      "genres" : ["Pop","Electronic","Hip-Hop"],
+      "Songs" : {},
+      "first-name": "Aditya",
+      "last-name": "Trivedi",
+      "age": "23",
+      "city": "Fairfax",
+      "state": "VA",
+      "email": "a@b.com",
+      "date-of-birth": "2017-11-20"
+    },
+    "Shreyans":{
+      "Password" : "mypassword",
+      "genres" : ["Pop","Electronic","Hip-Hop"],
+      "Songs" : {},
+      "first-name": "Shreyans",
+      "last-name": "Shah",
+      "age": "23",
+      "city": "Fairfax",
+      "state": "VA",
+      "email": "a@b.com",
+      "date-of-birth": "2017-11-20"
+    }
+  }
+}
