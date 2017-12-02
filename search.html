@@ -3,10 +3,12 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=2.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script type="text/javascript" src="./test.js"></script>
+<script type="text/javascript" src="./search.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
+
 <style>
 html {
   height: 100%;
@@ -146,15 +148,15 @@ line-height: 5rem;
 <div class="main container" style="overflow: scroll;">
     <div class="image"><img src="images/violin.jpg" height="465" width="700"/></div>
     <h2>Search:</h2>
-    <form class="form-inline">
+    <div class="form-inline">
 	<div id="searchAreaParent" class="form-group" >
 		<div id="searchArea">
 		</div>
 		<i class="fa fa-plus-square fa-2x" aria-hidden="false" onClick="addSearchBoxes('searchArea');"></i>
-		<button class="btn btn-default"> Search </button>
+		<button class="btn btn-default" onClick="onSearchClick()"> Search </button>
 	</div>
 	<label id="lbl_err" style="visibility:hidden;color:red"> You cannot Exceed (10)! </label>
-	</form>
+	</div>
   </div>
 
   <div class="right">
@@ -165,7 +167,7 @@ line-height: 5rem;
     <p>for more information on musicontology please visit <a href="http://musicontology.com/">http://musicontology.com/</a> </p>
   </div>
 </div>
-<footer class="login-footer">� copyright MusicRecommender</footer>
+<footer class="login-footer">(C) copyright MusicRecommender</footer>
 
 </body>
 </html>
