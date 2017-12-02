@@ -146,14 +146,13 @@ line-height: 5rem;
     </div>
   </nav>
 <div class="main container" style="overflow: scroll;">
-    <div class="image"><img src="images/violin.jpg" height="465" width="700"/></div>
     <h2>Search:</h2>
     <div class="form-inline">
 	<div id="searchAreaParent" class="form-group" >
 		<div id="searchArea">
 		</div>
 		<i class="fa fa-plus-square fa-2x" aria-hidden="false" onClick="addSearchBoxes('searchArea');"></i>
-		<button class="btn btn-default" onClick="onSearchClick()"> Search </button>
+		<button class="btn btn-default"  data-toggle="modal" data-target="#myModal" onClick="onSearchClick()"> Search </button>
 	</div>
 	<label id="lbl_err" style="visibility:hidden;color:red"> You cannot Exceed (10)! </label>
 	</div>
@@ -169,6 +168,7 @@ line-height: 5rem;
     <input type=radio name="activity" value="relaxing">Relaxing</input>&nbsp;&nbsp;&nbsp;<input type=radio name="activity" value="workout">Working Out</input>&nbsp;&nbsp;&nbsp;
     <input type=radio name="activity" value="studying">Studying</input>&nbsp;&nbsp;&nbsp;<input type=radio name="activity" value="patry">Partying</input><br><br>
   </div>
+	<button class="btn btn-default"  data-toggle="modal" data-target="#myModal" onClick="onSearchClick()"> Search </button>
   </div>
 
   <div class="right">
@@ -180,6 +180,27 @@ line-height: 5rem;
   </div>
 </div>
 <footer class="login-footer">(C) copyright MusicRecommender</footer>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Results</h4>
+      </div>
+      <div id="resultDiv" style="overflow:auto;" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 </body>
 </html>

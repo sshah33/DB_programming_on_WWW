@@ -69,6 +69,7 @@ function onDeleteSearchBox(divId){
 
 function onSearchClick(){
 	var searchDivs = document.getElementsByClassName('searchBox');
+	var div = document.getElementById("resultDiv");
 	var textData;
 	var selectData;
 	
@@ -82,7 +83,56 @@ function onSearchClick(){
 		url:'/search',
 		data:{searchKey:textData , category:selectData},
 		success: function(res){
+			
+			if(typeof res == 'string')
+				res = JSON.parse(res);
+			
 			debugger;
+			var htmlOutput='<div class="panel panel-primary" style="height:400px; overflow:auto;">'+
+			  '<div class="panel-heading">'+selectData+ ': ' + textData +'</div>'+
+			  '<div class="panel-body"><ul class="list-group">';
+			
+			for(var i=0;i<res.length;i++){
+				htmlOutput +='<li class="list-group-item list-group-item-info">'+res[i].list.value+'</li>';
+			}
+			
+			htmlOutput +='</ul></div></div>';
+			div.innerHTML = htmlOutput;
+		}
+	})
+}
+
+function onSearchClick(){
+	var searchDivs = document.getElementsByClassName('searchBox');
+	var div = document.getElementById("resultDiv");
+	var textData;
+	var selectData;
+	
+	for(var i=0;i<searchDivs.length;i++)
+	{
+		textData = searchDivs[i].querySelector("input").value;
+		selectData = searchDivs[i].querySelector("select").value;
+	}
+	
+	$.ajax({
+		url:'/search',
+		data:{searchKey:textData , category:selectData},
+		success: function(res){
+			
+			if(typeof res == 'string')
+				res = JSON.parse(res);
+			
+			debugger;
+			var htmlOutput='<div class="panel panel-primary" style="height:400px; overflow:hidden;">'+
+			  '<div class="panel-heading">'+selectData+ ': ' + textData +'</div>'+
+			  '<div class="panel-body" style="overflow:auto;max-height:350px;"><ul class="list-group">';
+			
+			for(var i=0;i<res.length;i++){
+				htmlOutput +='<li class="list-group-item list-group-item-info">'+res[i].list.value+'</li>';
+			}
+			
+			htmlOutput +='</ul></div></div>';
+			div.innerHTML = htmlOutput;
 		}
 	})
 }

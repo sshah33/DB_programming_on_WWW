@@ -127,6 +127,9 @@ var genericFetchQuery = "select DISTINCT ?property ?hasValue ?isValueOf where "
 +"UNION {?s rdf:type |type| . ?s |property| '|value|' . ?isValueOf ?property ?s}}"+
 "ORDER BY (!BOUND(?hasValue)) ?property ?hasValue ?isValueOf";
 
+var fetchSongsList = "Select ?list where {?l rdf:type mo:Track . ?l foaf:maker ?artist . ?artist foaf:name '|value|' . ?l dc:title ?list}"
+var fetchSongsPerTag = "Select ?t ?name where {?li rdf:type tags:Tag . ?li tags:tagName '|value|' . ?l tags:taggedWithTag ?li . ?l rdf:type mo:Track . ?l dc:title ?t . ?l foaf:maker ?artist . ?artist foaf:name ?name}";
+var fetchSongsPerSongName = "Select * where {?l rdf:type mo:Track . ?l dc:title '|value|' . ?l ?p ?o}";
 function getInitialUserTrackList(genreList,songsList){
 	var query = "";
 	
@@ -135,13 +138,29 @@ function getInitialUserTrackList(genreList,songsList){
 
 function fetchArtist(type,value,resp,callBack){
 	var query = PREFIX_QUERY + " " +genericFetchQuery.replace(/\|type\|/g,type).replace(/\|property\|/g,"foaf:name").replace(/\|value\|/g,value);
-	
-	console.log(query);
+	var songsListQuery = PREFIX_QUERY + " " + fetchSongsList.replace(/\|value\|/g,value);
+	var fetchSongsPerTag = PREFIX_QUERY + " " + fetchSongsList.replace(/\|value\|/g,value);
+	var fetchSongsPerSongName = PREFIX_QUERY + " " + fetchSongsPerSongName.replace(/\|value\|/g,value);
 	
 	try{
+		switch(type){
+			case 'mo:MusicArtist':
+				query= songsListQuery;
+				break;
+			case 'tags:taggedWithTag':
+				query= fetchSongsPerTag;
+				break;
+			case 'mo:Record':
+				query= fetchSongsPerSongName;
+				break;
+			
+		}
+		
+		console.log(query);
+		
 		client.query(query, function(err, res){
 			console.log(res ? res.results : err);
-			resp.send(res);
+			resp.send(res.results.bindings);
 		});
 	}
 	catch(err){
