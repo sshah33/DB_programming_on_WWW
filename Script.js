@@ -86,7 +86,7 @@ app.get('/addSong', function (req,res){
 			res.send(filedata.users[obj].Songs[req.query.songName].toString());
 		}
 	  }else{
-		res.send("error");
+		//res.send("error");
 	  }
 	}
 });
@@ -104,7 +104,7 @@ app.get('/search', function(req,res){
 selectOptionsReference = {
 	'Artist':'mo:MusicArtist', //foaf:maker is list of his/her songs. //foaf:homepage
 	'Track':'mo:Track',
-	'Release':'mo:Release', //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country 
+	'Release':'mo:Release', //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country
 	'Record/Album':'mo:Record', //mo:Record is an album and mo:track is it's track list. and dc:title is it's title.
 	'Place':'', //Concert
 	'Label':'mo:Label', //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
@@ -159,7 +159,7 @@ var fetchSongsPerSongName = "Select * where {?l rdf:type mo:Track . ?l dc:title 
 
 function getInitialUserTrackList(genreList,songsList){
 	var query = "";
-	
+
 	client.query(query, function(err, res){ console.log(res ? res.results.bindings : err) });
 }
 
@@ -179,11 +179,11 @@ function fetchArtist(type,value,resp,callBack){
 			case 'mo:Track':
 				query+= fetchBySongNameQuery.replace(/\|SongName\|/g,value);
 				break;
-			
+
 		}
-		
+
 		console.log(query);
-		
+
 		client.query(query, function(err, res){
 			console.log(res);
 			resp.send(res);
@@ -201,7 +201,7 @@ var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLang
 	'?track rdf:type mo:Track . '+
 	'?track dc:title "|SongName|" . '+
 	'?track foaf:maker ?artist . '+
-	'?artist foaf:name ?ArtistName .'+ 
+	'?artist foaf:name ?ArtistName .'+
 	'?track mo:length ?SongLength . '+
 	'?rec mo:track ?track . '+
 	'?rec dc:title ?AlbumTitle .'+
@@ -215,7 +215,7 @@ var fetchByArtistName = 'Select ?SongName ?SongLength ?AlbumTitle ?SongLanguage 
 	'?track rdf:type mo:Track . '+
 	'?track dc:title ?SongName . '+
 	'?track foaf:maker ?artist . '+
-	'?artist foaf:name "|ArtistName|" .'+ 
+	'?artist foaf:name "|ArtistName|" .'+
 	'?track mo:length ?SongLength . '+
 	'?rec mo:track ?track . '+
 	'?rec dc:title ?AlbumTitle .'+
@@ -229,7 +229,7 @@ var fetchByAlbumTitleQuery = 'Select ?SongName ?ArtistName ?SongLength ?SongLang
 	'?track rdf:type mo:Track . '+
 	'?track dc:title ?SongName . '+
 	'?track foaf:maker ?artist . '+
-	'?artist foaf:name ?ArtistName .'+ 
+	'?artist foaf:name ?ArtistName .'+
 	'?track mo:length ?SongLength . '+
 	'?rec mo:track ?track . '+
 	'?rec dc:title "|AlbumTitle|" .'+

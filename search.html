@@ -130,6 +130,16 @@ line-height: 5rem;
   padding-top:10px;
 }
 </style>
+<script>
+  var name=""; //window.location.hash.replace("#","");
+  if(sessionStorage.getItem('name') == null){
+      sessionStorage.setItem('name', name);
+  }
+  else{
+    name=sessionStorage.getItem('name');
+    window.location.hash = "#"+name;
+  }
+</script>
 </head>
 <body>
 
@@ -140,7 +150,7 @@ line-height: 5rem;
         <a class="navbar-brand" href="#">JASS</a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a href="home.html">Home</a></li>
+        <li><a href="home.html#"+usr>Home</a></li>
         <li  class="active"><a href="search.html">Search</a></li>
         <li><a href="#">About Us</a></li>
       </ul>

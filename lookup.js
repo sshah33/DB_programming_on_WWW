@@ -1,14 +1,22 @@
 function lookup(){
   var name= window.location.hash.replace("#","");
+  if(sessionStorage.getItem('name') == null){
+      sessionStorage.setItem('name', name);
+  }
+  else{
+    name=sessionStorage.getItem('name');
+    window.location.hash = "#"+name;
+  }
+
  //document.getElementById("left").innerHTML = name
- 
+
 //var filedata = $.getJSON("test.json");
 $.ajax({
   dataType: "json",
   url: "/fetchUserFile",
   success: function(res){
-	
-  recommendBuilder(res.users[name].genres);
+
+  recommendBuilder(res.users[name].genre);
   var Songs = res.users[name].Songs;
   var list = document.getElementById('recentSongsList');
   var innerHTML = "";
@@ -16,7 +24,7 @@ $.ajax({
 	innerHTML += '<li class="list-group-item" onClick="onClickSongListen(\''+keys+'\')">'+keys+' <span class="badge">'+Songs[keys]+'</span></li>';
   }
   list.innerHTML += innerHTML;
-  
+
   /*var table = document.getElementById('table_songs');
   var thead=document.createElement('thead');
   var th1=document.createElement('th');
@@ -60,20 +68,20 @@ function recommendBuilder(listOfGenres){
 	//var listOfGenres = ['rock','dance','edm'];
 	var div = document.getElementById('table_recommend').parentElement;
 	div.style.overflow = "auto";
-	
+
 	for(var i=0;i<listOfGenres.length;i++){
 		var key = listOfGenres[i];
 		var counter = i;
-		
+
 		(function(key,counter) {
 			$.ajax({
 				url:'/search',
 				data:{searchKey: key, category:'Tag/Genre'},
 				success: function(res){
-					
+
 					if(typeof res == 'string')
 						res = JSON.parse(res);
-					
+
 					var htmlOutput='<div class="panel panel-primary" style="max-height:400px; overflow:hidden;">'+
 					  '<div class="panel-heading">'+
 						'<h4 class="panel-title">'+
@@ -81,7 +89,7 @@ function recommendBuilder(listOfGenres){
 						'</h4></div><div id="collapse'+counter+'" class="panel-collapse collapse">'+
 					  '<div class="panel-body" style="overflow:auto;max-height:350px;"><table class="table table-bordered"><thead><tr>';
 					if(res.results.bindings.length > 0){
-						
+
 						for(var i=0;i<res.head.vars.length;i++){
 							htmlOutput +='<th>'+res.head.vars[i]+'</th>';
 						}
@@ -97,9 +105,9 @@ function recommendBuilder(listOfGenres){
 								else{
 									htmlOutput +='<td>'+details[prop].value+'</td>';
 								}
-								
+
 							}
-							
+
 							htmlOutput +='</tr>';
 						}
 					}else{
@@ -115,7 +123,7 @@ function recommendBuilder(listOfGenres){
 
 function onClickSongListen(songName){
 	var name= window.location.hash.replace("#","");
-	
+
 	$.ajax({
 				url:'/addSong',
 				data:{songName: songName, name:name},

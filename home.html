@@ -9,6 +9,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script>usrs= window.location.hash.replace("#","");</script>
 <style>
 html {
   height: 100%;
@@ -170,7 +171,7 @@ line-height: 5rem;
         <a class="navbar-brand" href="#">JASS</a>
       </div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="home.html">Home</a></li>
+        <li class="active"><a href="home.html#"+usrs>Home</a></li>
         <li><a href="search.html">Search</a></li>
         <li><a href="#">About Us</a></li>
       </ul>
