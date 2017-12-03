@@ -88,7 +88,7 @@ function recommendBuilder(listOfGenres){
 						htmlOutput += "</tr></thead><tbody>";
 						for(var i=0;i<res.results.bindings.length;i++){
 							var details = res.results.bindings[i];
-							htmlOutput +='<tr onClick="onClickSongListen(\''+details.songName.value+'\')">';
+							htmlOutput +='<tr onClick="onClickSongListen(\''+(details.SongName ? details.SongName.value : details.AlbumTitle.value)+'\')">';
 							for (var prop in details)
 							{
 								if(prop == 'coverArt'){
@@ -121,6 +121,7 @@ function onClickSongListen(songName){
 				data:{songName: songName, name:name},
 				success: function(res){
 					console.log(res);
+					alert('Hope you enjoyed the song :)');
 				}
 	})
 }
