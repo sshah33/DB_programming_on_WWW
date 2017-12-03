@@ -13,7 +13,7 @@ $.ajax({
   var list = document.getElementById('recentSongsList');
   var innerHTML = "";
   for(var keys in Songs){
-	innerHTML += '<li class="list-group-item">'+keys+' <span class="badge">'+Songs[keys]+'</span></li>';
+	innerHTML += '<li class="list-group-item" onClick="onClickSongListen(\''+keys+'\')">'+keys+' <span class="badge">'+Songs[keys]+'</span></li>';
   }
   list.innerHTML += innerHTML;
   
@@ -88,7 +88,7 @@ function recommendBuilder(listOfGenres){
 						htmlOutput += "</tr></thead><tbody>";
 						for(var i=0;i<res.results.bindings.length;i++){
 							var details = res.results.bindings[i];
-							htmlOutput +='<tr>';
+							htmlOutput +='<tr onClick="onClickSongListen(\''+details.songName.value+'\')">';
 							for (var prop in details)
 							{
 								if(prop == 'coverArt'){
@@ -111,4 +111,16 @@ function recommendBuilder(listOfGenres){
 			});
 		}(key,counter));
 	}
+}
+
+function onClickSongListen(songName){
+	var name= window.location.hash.replace("#","");
+	
+	$.ajax({
+				url:'/addSong',
+				data:{songName: songName, name:name},
+				success: function(res){
+					console.log(res);
+				}
+	})
 }

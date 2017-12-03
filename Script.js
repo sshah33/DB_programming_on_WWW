@@ -48,10 +48,7 @@ function readFile(filepath){
 }
 
 function writeFile(filepath, content){
-  fs.writeFileSync(filepath, JSON.stringify(content), function (err) {
-  if (err) throw err;
-  console.log('Saved!');
-});
+  fs.writeFileSync(filepath, JSON.stringify(content));
 }
 
 app.post('/userSubmit', function (req, res) {
@@ -67,6 +64,31 @@ for (var obj in filedata.users)
     res.redirect("/home.html#"+info["name"]);
   }
 }
+});
+
+app.get('/addSong', function (req,res){
+	var filedata = readFile("./json/userinfo.json");
+	for (var obj in filedata.users)
+	{
+	  if(filedata.users[obj].firstName == req.query.name)
+	  {
+		console.log(req.query.name);
+		if(filedata.users[obj].Songs.hasOwnProperty(req.query.songName)){
+			filedata.users[obj].Songs[req.query.songName] = filedata.users[obj].Songs[req.query.songName]+1;
+			console.log(filedata.users[obj].Songs[req.query.songName]);
+			writeFile("./json/userinfo.json", filedata);
+			res.send(filedata.users[obj].Songs[req.query.songName].toString());
+		}
+		else{
+			filedata.users[obj].Songs[req.query.songName] = 1;
+			console.log(filedata.users[obj].Songs[req.query.songName]);
+			writeFile("./json/userinfo.json", filedata);
+			res.send(filedata.users[obj].Songs[req.query.songName].toString());
+		}
+	  }else{
+		res.send("error");
+	  }
+	}
 });
 
 
