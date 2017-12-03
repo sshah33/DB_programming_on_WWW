@@ -187,7 +187,7 @@ var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLang
 	'?lan rdfs:label ?SongLanguage .'+
 	'?rec dc:date ?releaseDate .'+
 	'?rec vocab:albummeta_coverarturl ?coverArt'+
-'}';
+'} limit 50';
 
 var fetchByArtistName = 'Select ?SongName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
 	'?track rdf:type mo:Track . '+
@@ -201,7 +201,7 @@ var fetchByArtistName = 'Select ?SongName ?SongLength ?AlbumTitle ?SongLanguage 
 	'?lan rdfs:label ?SongLanguage .'+
 	'?rec dc:date ?releaseDate .'+
 	'?rec vocab:albummeta_coverarturl ?coverArt'+
-'}';
+'} limit 50';
 
 var fetchByAlbumTitleQuery = 'Select ?SongName ?ArtistName ?SongLength ?SongLanguage ?releaseDate ?coverArt where {'+
 	'?track rdf:type mo:Track . '+
@@ -215,7 +215,7 @@ var fetchByAlbumTitleQuery = 'Select ?SongName ?ArtistName ?SongLength ?SongLang
 	'?lan rdfs:label ?SongLanguage .'+
 	'?rec dc:date ?releaseDate .'+
 	'?rec vocab:albummeta_coverarturl ?coverArt'+
-'}';
+'} limit 50';
 
 var fetchByTagQuery = 'Select ?SongName ?ArtistName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
 '?tag rdf:type tags:Tag . '+
@@ -232,6 +232,6 @@ var fetchByTagQuery = 'Select ?SongName ?ArtistName ?SongLength ?AlbumTitle ?Son
 '?lan rdfs:label ?SongLanguage .'+
 '?rec dc:date ?releaseDate .'+
 '?rec vocab:albummeta_coverarturl ?coverArt'+
-'}';
+'} limit 50';
 
 app.listen(8888);

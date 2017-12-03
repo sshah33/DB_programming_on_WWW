@@ -1,15 +1,23 @@
 function lookup(){
   var name= window.location.hash.replace("#","");
  //document.getElementById("left").innerHTML = name
- recommendBuilder();
+ 
 //var filedata = $.getJSON("test.json");
 $.ajax({
   dataType: "json",
   url: "/fetchUserFile",
   success: function(res){
-
-  var keys = res.users[name].Songs;
-  var table = document.getElementById('table_songs');
+	
+  recommendBuilder(res.users[name].genres);
+  var Songs = res.users[name].Songs;
+  var list = document.getElementById('recentSongsList');
+  var innerHTML = "";
+  for(var keys in Songs){
+	innerHTML += '<li class="list-group-item">'+keys+' <span class="badge">'+Songs[keys]+'</span></li>';
+  }
+  list.innerHTML += innerHTML;
+  
+  /*var table = document.getElementById('table_songs');
   var thead=document.createElement('thead');
   var th1=document.createElement('th');
   var th2=document.createElement('th');
@@ -40,7 +48,7 @@ $.ajax({
       tr.appendChild(td2);
       tbody.appendChild(tr);
       table.appendChild(tbody);
-}
+}*/
   },
   error: function(res){
     console.log("error");
@@ -48,8 +56,8 @@ $.ajax({
 });
 }
 
-function recommendBuilder(){
-	var listOfGenres = ['rock','dance','edm'];
+function recommendBuilder(listOfGenres){
+	//var listOfGenres = ['rock','dance','edm'];
 	var div = document.getElementById('table_recommend').parentElement;
 	div.style.overflow = "auto";
 	
