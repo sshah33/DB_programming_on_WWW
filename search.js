@@ -2,12 +2,12 @@
 counter = 0;
 selectOptionsReference = {
 	'Artist':'mo:MusicArtist', //foaf:maker is list of his/her songs. //foaf:homepage
-	'Release':'mo:Release', //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country 
+	//'Release':'mo:Release', //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country 
 	'Record/Album':'mo:Record', //mo:Record is an album and mo:track is it's track list. and dc:title is it's title.
-	'Place':'', //Concert
-	'Label':'mo:Label', //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
+	//'Place':'', //Concert
+	'Track':'mo:Track', //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
 	'Tag/Genre':'tags:taggedWithTag', //vocab:tag_count , rdf:type tags:Tag
-	'Instrument':'',
+	//'Instrument':'',
 	//'Event':''
 }
 
@@ -125,13 +125,36 @@ function onSearchClick(){
 			debugger;
 			var htmlOutput='<div class="panel panel-primary" style="height:400px; overflow:hidden;">'+
 			  '<div class="panel-heading">'+selectData+ ': ' + textData +'</div>'+
-			  '<div class="panel-body" style="overflow:auto;max-height:350px;"><ul class="list-group">';
+			  '<div class="panel-body" style="overflow:auto;max-height:350px;"><table class="table table-bordered"><thead><tr>';
 			
-			for(var i=0;i<res.length;i++){
-				htmlOutput +='<li class="list-group-item list-group-item-info">'+res[i].list.value+'</li>';
+			for(var i=0;i<res.head.vars.length;i++){
+				htmlOutput +='<th>'+res.head.vars[i]+'</th>';
+			}
+			htmlOutput += "</tr></thead><tbody>";
+			for(var i=0;i<res.results.bindings.length;i++){
+				var details = res.results.bindings[i];
+				htmlOutput +='<tr>';
+				for (var prop in details)
+				{
+					if(prop == 'coverArt'){
+						htmlOutput +='<td><img src="'+details[prop].value+'"></a></td>';
+					}
+					else{
+						htmlOutput +='<td>'+details[prop].value+'</td>';
+					}
+					
+				}
+				
+				htmlOutput +='</tr>';
+				/*
+				<tr>
+					<td>July</td>
+					<td>Dooley</td>
+					<td>july@example.com</td>
+				</tr>*/
 			}
 			
-			htmlOutput +='</ul></div></div>';
+			htmlOutput +='</tbody></table></div></div>';
 			div.innerHTML = htmlOutput;
 		}
 	})

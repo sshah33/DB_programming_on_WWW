@@ -1,3 +1,7 @@
+//Down
+// Select ?list where {?l rdf:type mo:Track . ?l foaf:maker ?artist . ?artist foaf:name ?name . FILTER(CONTAINS(?name, "Eminem")) . ?l dc:title ?list}
+
+
 var http = require('http');
 var fs = require('fs');
 var express = require('express');
@@ -77,13 +81,13 @@ app.get('/search', function(req,res){
 
 selectOptionsReference = {
 	'Artist':'mo:MusicArtist', //foaf:maker is list of his/her songs. //foaf:homepage
+	'Track':'mo:Track',
 	'Release':'mo:Release', //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country 
 	'Record/Album':'mo:Record', //mo:Record is an album and mo:track is it's track list. and dc:title is it's title.
 	'Place':'', //Concert
 	'Label':'mo:Label', //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
 	'Tag/Genre':'tags:taggedWithTag', //vocab:tag_count , rdf:type tags:Tag
-	'Instrument':'',
-	//'Event':''
+	'Instrument':''
 }
 
 
@@ -130,6 +134,7 @@ var genericFetchQuery = "select DISTINCT ?property ?hasValue ?isValueOf where "
 var fetchSongsList = "Select ?list where {?l rdf:type mo:Track . ?l foaf:maker ?artist . ?artist foaf:name '|value|' . ?l dc:title ?list}"
 var fetchSongsPerTag = "Select ?t ?name where {?li rdf:type tags:Tag . ?li tags:tagName '|value|' . ?l tags:taggedWithTag ?li . ?l rdf:type mo:Track . ?l dc:title ?t . ?l foaf:maker ?artist . ?artist foaf:name ?name}";
 var fetchSongsPerSongName = "Select * where {?l rdf:type mo:Track . ?l dc:title '|value|' . ?l ?p ?o}";
+
 function getInitialUserTrackList(genreList,songsList){
 	var query = "";
 	
@@ -137,21 +142,20 @@ function getInitialUserTrackList(genreList,songsList){
 }
 
 function fetchArtist(type,value,resp,callBack){
-	var query = PREFIX_QUERY + " " +genericFetchQuery.replace(/\|type\|/g,type).replace(/\|property\|/g,"foaf:name").replace(/\|value\|/g,value);
-	var songsListQuery = PREFIX_QUERY + " " + fetchSongsList.replace(/\|value\|/g,value);
-	var fetchSongsPerTag = PREFIX_QUERY + " " + fetchSongsList.replace(/\|value\|/g,value);
-	var fetchSongsPerSongName = PREFIX_QUERY + " " + fetchSongsPerSongName.replace(/\|value\|/g,value);
-	
+	var query = PREFIX_QUERY + " ";//+genericFetchQuery.replace(/\|type\|/g,type).replace(/\|property\|/g,"foaf:name").replace(/\|value\|/g,value);
 	try{
 		switch(type){
 			case 'mo:MusicArtist':
-				query= songsListQuery;
+				query += fetchByArtistName.replace(/\|ArtistName\|/g,value);
 				break;
 			case 'tags:taggedWithTag':
-				query= fetchSongsPerTag;
+				query+= fetchByTagQuery.replace(/\|tag\|/g,value);
 				break;
 			case 'mo:Record':
-				query= fetchSongsPerSongName;
+				query+= fetchByAlbumTitleQuery.replace(/\|AlbumTitle\|/g,value);
+				break;
+			case 'mo:Track':
+				query+= fetchBySongNameQuery.replace(/\|SongName\|/g,value);
 				break;
 			
 		}
@@ -159,8 +163,8 @@ function fetchArtist(type,value,resp,callBack){
 		console.log(query);
 		
 		client.query(query, function(err, res){
-			console.log(res ? res.results : err);
-			resp.send(res.results.bindings);
+			console.log(res);
+			resp.send(res);
 		});
 	}
 	catch(err){
@@ -171,6 +175,63 @@ function fetchArtist(type,value,resp,callBack){
 
 //------------------------------------------------------------------------- -----------------------------------------------------------------------------//
 
+var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
+	'?track rdf:type mo:Track . '+
+	'?track dc:title "|SongName|" . '+
+	'?track foaf:maker ?artist . '+
+	'?artist foaf:name ?ArtistName .'+ 
+	'?track mo:length ?SongLength . '+
+	'?rec mo:track ?track . '+
+	'?rec dc:title ?AlbumTitle .'+
+	'?rec dc:language ?lan .'+
+	'?lan rdfs:label ?SongLanguage .'+
+	'?rec dc:date ?releaseDate .'+
+	'?rec vocab:albummeta_coverarturl ?coverArt'+
+'}';
 
+var fetchByArtistName = 'Select ?SongName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
+	'?track rdf:type mo:Track . '+
+	'?track dc:title ?SongName . '+
+	'?track foaf:maker ?artist . '+
+	'?artist foaf:name "|ArtistName|" .'+ 
+	'?track mo:length ?SongLength . '+
+	'?rec mo:track ?track . '+
+	'?rec dc:title ?AlbumTitle .'+
+	'?rec dc:language ?lan .'+
+	'?lan rdfs:label ?SongLanguage .'+
+	'?rec dc:date ?releaseDate .'+
+	'?rec vocab:albummeta_coverarturl ?coverArt'+
+'}';
+
+var fetchByAlbumTitleQuery = 'Select ?SongName ?ArtistName ?SongLength ?SongLanguage ?releaseDate ?coverArt where {'+
+	'?track rdf:type mo:Track . '+
+	'?track dc:title ?SongName . '+
+	'?track foaf:maker ?artist . '+
+	'?artist foaf:name ?ArtistName .'+ 
+	'?track mo:length ?SongLength . '+
+	'?rec mo:track ?track . '+
+	'?rec dc:title "|AlbumTitle|" .'+
+	'?rec dc:language ?lan .'+
+	'?lan rdfs:label ?SongLanguage .'+
+	'?rec dc:date ?releaseDate .'+
+	'?rec vocab:albummeta_coverarturl ?coverArt'+
+'}';
+
+var fetchByTagQuery = 'Select ?SongName ?ArtistName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
+'?tag rdf:type tags:Tag . '+
+'?tag tags:tagName "|tag|" . '+
+'?track tags:taggedWithTag ?tag . '+
+'?track rdf:type mo:Track . '+
+'?track dc:title ?SongName . '+
+'?track foaf:maker ?artist . '+
+'?artist foaf:name ?ArtistName .'+
+'?track mo:length ?SongLength .'+
+'?rec mo:track ?track .'+
+'?rec dc:title ?AlbumTitle .'+
+'?rec dc:language ?lan .'+
+'?lan rdfs:label ?SongLanguage .'+
+'?rec dc:date ?releaseDate .'+
+'?rec vocab:albummeta_coverarturl ?coverArt'+
+'}';
 
 app.listen(8888);
