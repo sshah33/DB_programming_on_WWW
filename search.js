@@ -67,7 +67,7 @@ function onDeleteSearchBox(divId){
 	}
 }
 
-function onSearchClick(){
+/*function onSearchClick(){
 	var searchDivs = document.getElementsByClassName('searchBox');
 	var div = document.getElementById("resultDiv");
 	var textData;
@@ -100,7 +100,7 @@ function onSearchClick(){
 			div.innerHTML = htmlOutput;
 		}
 	})
-}
+}*/
 
 function onSearchClick(){
 	var searchDivs = document.getElementsByClassName('searchBox');
