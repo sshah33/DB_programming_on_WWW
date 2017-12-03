@@ -133,7 +133,7 @@ function onSearchClick(){
 			htmlOutput += "</tr></thead><tbody>";
 			for(var i=0;i<res.results.bindings.length;i++){
 				var details = res.results.bindings[i];
-				htmlOutput +='<tr>';
+				htmlOutput +='<tr onClick="onClickSongListen(\''+(details.SongName ? details.SongName.value : details.AlbumTitle.value)+'\')">';
 				for (var prop in details)
 				{
 					if(prop == 'coverArt'){
