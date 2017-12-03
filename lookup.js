@@ -39,7 +39,41 @@ $.ajax({
       tr.appendChild(td2);
       tbody.appendChild(tr);
       table.appendChild(tbody);
-  }
+}
+      //Recommended Songs
+
+      var keys2 = res.users[name].Songs;
+      var table2 = document.getElementById('table_recommend');
+      var thead2=document.createElement('thead');
+      var th3=document.createElement('th');
+      var th4=document.createElement('th');
+      var tr2 = document.createElement('tr');
+      var text5 = document.createTextNode("Song");
+      var text6 = document.createTextNode("Genre");
+      th3.appendChild(text5);
+      th4.appendChild(text6);
+      tr2.appendChild(th3);
+      tr2.appendChild(th4);
+      thead2.appendChild(tr2);
+      table2.appendChild(thead2);
+      var tbody2=document.createElement('tbody');
+
+      var trx = document.createElement('tr');
+
+      var td3 = document.createElement('td');
+      var td4 = document.createElement('td');
+
+      var text3 = document.createTextNode("Maps");
+      var text4 = document.createTextNode("Pop");
+
+
+      td3.appendChild(text3);
+      td4.appendChild(text4);
+      trx.appendChild(td3);
+      trx.appendChild(td4);
+      tbody2.appendChild(trx);
+      table2.appendChild(tbody2);
+
 //  document.getElementById('left').appendChild(table);
      alert("Page is loaded");
   },

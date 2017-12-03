@@ -42,7 +42,7 @@ body {
   padding:15px;
   margin-top:1px;
   text-align: justify;
-  font-size: 11px;
+  font-size: 14px;
 }
 .left {
   background-color:#eee;
@@ -63,12 +63,15 @@ body {
   float:left;
   width:49%;
   max-width:49%;
-  padding:15px;
   margin-top:1px;
   text-align: justify;
   font-size: 14px;
 }
 .container table{
+  width:700px;
+}
+
+.right table{
   width:700px;
 }
 
@@ -164,7 +167,7 @@ line-height: 5rem;
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">WebSiteName</a>
+        <a class="navbar-brand" href="#">JASS</a>
       </div>
       <ul class="nav navbar-nav">
         <li class="active"><a href="home.html">Home</a></li>
@@ -176,12 +179,15 @@ line-height: 5rem;
 <div>
 <div class="left">
   <div id="left" class="container">
+    <h3>Songs you played</h3>
     <table class="table table-bordered table-hover table-striped" id="table_songs">
     </table>
 </div>
 </div>
   <div id="right" class="right">
-    aesrfaeraer
+    <h3>Songs recommended for you</h3>
+    <table class="table table-bordered table-hover table-striped" id="table_recommend">
+    </table>
     </div>
 </div>
 <footer class="login-footer">� copyright MusicRecommender</footer>
