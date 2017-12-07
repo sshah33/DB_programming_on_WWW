@@ -138,7 +138,7 @@ display : none;
 {
 display : block;
 position : fixed;
-z-index: 100;
+z-index: 10000000000000;
 background-image : url('http://loadinggif.com/images/image-selection/3.gif');
 background-color:#666;
 opacity : 0.4;
@@ -204,18 +204,16 @@ margin-top : -16px;
 	</div>
   <div class="radios">
     <br><br>
-    What is your mood right now?<br>
-    <input type=radio name="mood" value="happy">Happy</input>&nbsp;&nbsp;&nbsp;<input type=radio name="mood" value="sad">Sad</input>&nbsp;&nbsp;&nbsp;
-    <input type=radio name="mood" value="excited">Excited</input>&nbsp;&nbsp;&nbsp;<input type=radio name="mood" value="tired">Tired</input><br><br>
-
+    
     What mood do you want to be in?<br>
     <input type=radio name="mood2" value="happy">Happy</input>&nbsp;&nbsp;&nbsp;<input type=radio name="mood2" value="relaxed">Relaxed</input>&nbsp;&nbsp;&nbsp;
     <input type=radio name="mood2" value="excited">Excited</input>&nbsp;&nbsp;&nbsp;<input type=radio name="mood2" value="energised">Energised</input><br><br>
     What activity are you doing now?<br>
     <input type=radio name="activity" value="relaxing">Relaxing</input>&nbsp;&nbsp;&nbsp;<input type=radio name="activity" value="workout">Working Out</input>&nbsp;&nbsp;&nbsp;
-    <input type=radio name="activity" value="studying">Studying</input>&nbsp;&nbsp;&nbsp;<input type=radio name="activity" value="patry">Partying</input><br><br>
+    <input type=radio name="activity" value="driving">Driving</input>&nbsp;&nbsp;&nbsp;
+	<input type=radio name="activity" value="studying">Studying</input>&nbsp;&nbsp;&nbsp;<input type=radio name="activity" value="partying">Partying</input><br><br>
   </div>
-	<button class="btn btn-default"  data-toggle="modal" data-target="#myModal" onClick="onSearchClick()"> Search </button>
+	<button class="btn btn-default"  data-toggle="modal" data-target="#myModal" onClick="onActivitySearchClick()"> Search </button>
   </div>
 
   <div class="right">

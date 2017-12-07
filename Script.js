@@ -244,6 +244,7 @@ function fetchArtist(type,value,resp,callBack){
 
 //------------------------------------------------------------------------- -----------------------------------------------------------------------------//
 
+
 var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
 	'?track rdf:type mo:Track . '+
 	'?track dc:title "|SongName|" . '+
@@ -256,7 +257,7 @@ var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLang
 	'?lan rdfs:label ?SongLanguage .'+
 	'?rec dc:date ?releaseDate .'+
 	'?rec vocab:albummeta_coverarturl ?coverArt'+
-'} limit 10';
+'} limit 50';
 
 var fetchByGenericQuery = 'Select DISTINCT ?SongName ?ArtistName ?tagName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
 	'?tag rdf:type tags:Tag . '+

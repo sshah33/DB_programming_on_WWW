@@ -11,6 +11,120 @@ selectOptionsReference = {
 	//'Event':''
 }
 
+
+var ActivityToGenreMapping = {
+	"happy": [
+		"pop",
+		"hip hop",
+		"dance",
+		"acoustic"
+	],
+	"relaxed": [
+		"country",
+		"soul",
+		"blues",
+		"classical"
+	],
+	"excited": [
+		"pop",
+		"hip hop",
+		"dance",
+		"electronic"
+	],
+	"energised": [
+		"metal",
+		"rock",
+		"dance"
+	],
+	"relaxing": [
+		"country",
+		"soul",
+		"blues",
+		"classical"
+	],
+	"workout": [
+		"rap",
+		"dance"
+	],
+	"studying": [
+		"soul",
+		"blues",
+		"classical"
+	],
+	"partying": [
+		"electronic",
+		"hip hop",
+		"metal"
+	],
+	"driving":[
+		"classic rock",
+		"rap",
+		"country",
+		"blues"
+	]
+}
+
+
+function recommendBuilderSearch(listOfGenres){
+	//var listOfGenres = ['rock','dance','edm'];
+	var div = document.getElementById("resultDiv");
+	$("div#divLoading").addClass('show');
+	
+	for(var i=0;i<listOfGenres.length;i++){
+		var key = listOfGenres[i];
+		var counter = i;
+
+		(function(key,counter) {
+			$.ajax({
+				url:'/search',
+				data:{searchKey: [key], category:['Tag/Genre']},
+				success: function(res){
+
+					if(typeof res == 'string')
+						res = JSON.parse(res);
+
+					var htmlOutput='<div class="panel panel-primary" style="max-height:400px; overflow:hidden;">'+
+					  '<div class="panel-heading">'+
+						'<h4 class="panel-title">'+
+							'<a data-toggle="collapse" href="#collapse'+counter+'">Tag/Genre: ' + key +'</a>'+
+						'</h4></div><div id="collapse'+counter+'" class="panel-collapse collapse">'+
+					  '<div class="panel-body" style="overflow:auto;max-height:350px;"><table class="table table-bordered"><thead><tr>';
+					if(res.results.bindings.length > 0){
+
+						for(var i=0;i<res.head.vars.length;i++){
+							htmlOutput +='<th>'+res.head.vars[i]+'</th>';
+						}
+						htmlOutput += "</tr></thead><tbody>";
+						for(var i=0;i<res.results.bindings.length;i++){
+							var details = res.results.bindings[i];
+							htmlOutput +='<tr onClick="onClickSongListen(\''+(details.SongName ? details.SongName.value : details.AlbumTitle.value)+'\')">';
+							for (var prop in details)
+							{
+								if(prop == 'coverArt'){
+									htmlOutput +='<td><img src="'+details[prop].value+'"></a></td>';
+								}
+								else{
+									htmlOutput +='<td>'+details[prop].value+'</td>';
+								}
+
+							}
+
+							htmlOutput +='</tr>';
+						}
+					}else{
+						htmlOutput += "</tr></thead><tbody>";
+					}
+					htmlOutput +='</tbody></table></div></div></div>';
+					div.innerHTML = div.innerHTML + htmlOutput;
+          $("div#divLoading").removeClass('show');
+           $("div#divLoading").addClass('hide');
+				}
+			});
+		}(key,counter));
+	}
+}
+
+
 selectOptionsUsed= {
 	'Artist':0, //foaf:maker is list of his/her songs. //foaf:homepage
 	//'Release':0, //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country
@@ -19,6 +133,18 @@ selectOptionsUsed= {
 	'Track':0, //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
 	'Tag/Genre':0, //vocab:tag_count , rdf:type tags:Tag
 }
+
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
 
 //searchArea
 function addSearchBoxes(divName){
@@ -36,6 +162,19 @@ function addSearchBoxes(divName){
 		errLabel.style.visibility = "visible";
 	}
 
+}
+
+function onActivitySearchClick(){
+	var radios = document.querySelectorAll('input[type=radio]:checked');
+	var genres = [];
+	
+	for(var i=0; i < radios.length; i++){
+		var gen = ActivityToGenreMapping[radios[i].value];
+		genres = genres.concat(gen).unique();
+	}
+	
+	console.log(genres);
+	recommendBuilderSearch(genres);
 }
 
 function createSearhField(){
@@ -163,7 +302,6 @@ function onSearchClick(){
 			if(typeof res == 'string')
 				res = JSON.parse(res);
 
-			debugger;
 			var htmlOutput='<div class="panel panel-primary" style="height:400px; overflow:hidden;">'+
 			  '<div class="panel-heading">'+selectData+ ': ' + textData +'</div>'+
 			  '<div class="panel-body" style="overflow:auto;max-height:350px;"><table class="table table-bordered"><thead><tr>';
