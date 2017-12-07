@@ -15,7 +15,7 @@ $.ajax({
   dataType: "json",
   url: "/fetchUserFile",
   success: function(res){
-
+  $("div#divLoading").addClass('show');
   recommendBuilder(res.users[name].genre);
   var Songs = res.users[name].Songs;
   var list = document.getElementById('recentSongsList');
@@ -115,6 +115,8 @@ function recommendBuilder(listOfGenres){
 					}
 					htmlOutput +='</tbody></table></div></div></div>';
 					div.innerHTML = div.innerHTML + htmlOutput;
+          $("div#divLoading").removeClass('show');
+           $("div#divLoading").addClass('hide');
 				}
 			});
 		}(key,counter));

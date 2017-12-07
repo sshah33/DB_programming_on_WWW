@@ -160,6 +160,45 @@ line-height: 5rem;
   float:right;
   padding-top:10px;
 }
+
+/*----------------------------------*/
+
+#divLoading
+{
+display : none;
+}
+#divLoading.show
+{
+display : block;
+position : fixed;
+z-index: 100;
+background-image : url('http://loadinggif.com/images/image-selection/3.gif');
+background-color:#666;
+opacity : 0.4;
+background-repeat : no-repeat;
+background-position : center;
+left : 0;
+bottom : 0;
+right : 0;
+top : 0;
+}
+#divLoading.hide
+{
+display : none;
+}
+#loadinggif.show
+{
+left : 50%;
+top : 50%;
+position : absolute;
+z-index : 101;
+width : 32px;
+height : 32px;
+margin-left : -16px;
+margin-top : -16px;
+}
+
+
 </style>
 </head>
 <body onload="lookup()">
@@ -200,6 +239,7 @@ line-height: 5rem;
     <h3>Songs recommended for you</h3>
     <table class="table table-bordered table-hover table-striped" id="table_recommend">
     </table>
+    <div id="divLoading">
     </div>
 </div>
 <!--<footer class="login-footer">� copyright MusicRecommender</footer>-->
