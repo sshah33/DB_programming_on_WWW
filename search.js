@@ -11,6 +11,14 @@ selectOptionsReference = {
 	//'Event':''
 }
 
+selectOptionsUsed= {
+	'Artist':0, //foaf:maker is list of his/her songs. //foaf:homepage
+	//'Release':0, //Date rdf:type mo:Release and mo:Record has mo:Release and dc:date. has mo:release_country 
+	'Record/Album':0, //mo:Record is an album and mo:track is it's track list. and dc:title is it's title.
+	//'Place':0, //Concert
+	'Track':0, //mo:Release has mo:release_label and foaf:based_near we can get country. vocab:label_name gets me the search string.
+	'Tag/Genre':0, //vocab:tag_count , rdf:type tags:Tag
+}
 
 //searchArea
 function addSearchBoxes(divName){
@@ -18,7 +26,7 @@ function addSearchBoxes(divName){
 	var divElement = document.getElementById("searchArea");
 	var errLabel = document.getElementById("lbl_err");
 	
-	if(counter < 5)
+	if(counter < 4)
 	{
 		var searchField = createSearhField();
 		divElement.appendChild(searchField);
@@ -31,6 +39,12 @@ function addSearchBoxes(divName){
 }
 
 function createSearhField(){
+	
+	var searchDivs = document.getElementsByClassName('searchBox');
+	for(var j=0;j<searchDivs.length;j++)
+	{
+		searchDivs[j].querySelector("select").disabled = true;
+	}
 
 	var div = document.createElement("div");
 	div.id = "searchBox"+ ++counter;
@@ -44,12 +58,32 @@ function createSearhField(){
 	
 	var selectBox = document.createElement("select");
 	selectBox.className = "form-control fixedwidth";
-	var keys = Object.keys(selectOptionsReference);
+	var keys = Object.keys(selectOptionsUsed);
+	
 	for (var i=0;i < keys.length;i++)
 	{
+		if(selectOptionsUsed[keys[i]] == 1)
+		{
+			continue;
+		}
 		var option = new Option (keys[i],keys[i]);
 		selectBox.options[selectBox.options.length] = option;
+		if(selectBox.options.length == 1)
+		{
+			selectOptionsUsed[keys[i]] = 1;
+		}
 	}
+	
+	selectBox.addEventListener("change", function(evt,a,b,c){
+		debugger;
+		selectOptionsUsed[evt.currentTarget.value] = 1;
+		for(var i=0;i<evt.currentTarget.options.length;i++)
+		{
+			if(evt.currentTarget.options.selectedIndex != evt.currentTarget.options[i].index)
+				selectOptionsUsed[evt.currentTarget.options[i].value] = 0;
+		}
+	});
+	
 	div.appendChild(selectBox);
 	div.insertAdjacentHTML('beforeend','<i class="fa fa-times fa-2x" onClick="onDeleteSearchBox(\''+div.id+'\');"></i>');
 	
@@ -59,6 +93,13 @@ function createSearhField(){
 function onDeleteSearchBox(divId){
 	var div = document.getElementById(divId);
 	var errLabel = document.getElementById("lbl_err");
+	var value = div.querySelector("select").value;
+	
+	selectOptionsUsed[value] = 0;
+	
+	if(div.previousElementSibling){
+		div.previousElementSibling.querySelector('select').disabled=false;
+	}
 	
 	if(div){
 		counter--;
@@ -105,13 +146,13 @@ function onDeleteSearchBox(divId){
 function onSearchClick(){
 	var searchDivs = document.getElementsByClassName('searchBox');
 	var div = document.getElementById("resultDiv");
-	var textData;
-	var selectData;
+	var textData = [];
+	var selectData = [];
 	
 	for(var i=0;i<searchDivs.length;i++)
 	{
-		textData = searchDivs[i].querySelector("input").value;
-		selectData = searchDivs[i].querySelector("select").value;
+		textData.push(searchDivs[i].querySelector("input").value);
+		selectData.push(searchDivs[i].querySelector("select").value);
 	}
 	
 	$.ajax({
