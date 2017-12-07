@@ -76,7 +76,7 @@ function recommendBuilder(listOfGenres){
 		(function(key,counter) {
 			$.ajax({
 				url:'/search',
-				data:{searchKey: key, category:'Tag/Genre'},
+				data:{searchKey: [key], category:['Tag/Genre']},
 				success: function(res){
 
 					if(typeof res == 'string')

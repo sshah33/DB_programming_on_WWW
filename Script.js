@@ -256,7 +256,7 @@ var fetchBySongNameQuery = 'Select ?ArtistName ?SongLength ?AlbumTitle ?SongLang
 	'?lan rdfs:label ?SongLanguage .'+
 	'?rec dc:date ?releaseDate .'+
 	'?rec vocab:albummeta_coverarturl ?coverArt'+
-'} limit 50';
+'} limit 10';
 
 var fetchByGenericQuery = 'Select DISTINCT ?SongName ?ArtistName ?tagName ?SongLength ?AlbumTitle ?SongLanguage ?releaseDate ?coverArt where {'+
 	'?tag rdf:type tags:Tag . '+
