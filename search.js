@@ -69,6 +69,7 @@ function recommendBuilderSearch(listOfGenres){
 	//var listOfGenres = ['rock','dance','edm'];
 	var div = document.getElementById("resultDiv");
 	$("div#divLoading").addClass('show');
+	div.innerHTML = "";
 	
 	for(var i=0;i<listOfGenres.length;i++){
 		var key = listOfGenres[i];
