@@ -129,6 +129,41 @@ line-height: 5rem;
   float:right;
   padding-top:10px;
 }
+
+#divLoading
+{
+display : none;
+}
+#divLoading.show
+{
+display : block;
+position : fixed;
+z-index: 100;
+background-image : url('http://loadinggif.com/images/image-selection/3.gif');
+background-color:#666;
+opacity : 0.4;
+background-repeat : no-repeat;
+background-position : center;
+left : 0;
+bottom : 0;
+right : 0;
+top : 0;
+}
+#divLoading.hide
+{
+display : none;
+}
+#loadinggif.show
+{
+left : 50%;
+top : 50%;
+position : absolute;
+z-index : 101;
+width : 32px;
+height : 32px;
+margin-left : -16px;
+margin-top : -16px;
+}
 </style>
 <script>
   var name=""; //window.location.hash.replace("#","");
@@ -190,6 +225,7 @@ line-height: 5rem;
     <p>It would be very difficult to tackle the many competing requirements of the music domain with a stand-alone format. By using RDF, the Music Ontology gains a powerful extensibility mechanism, allowing Music-Ontology-based data to be mixed with claims made in any other RDF vocabulary. Instead of covering all music-related topics within the Music Ontology itself, we describe the basic topics and build into a larger framework - RDF - that allows us to take advantage of work elsewhere on more specific description vocabularies.The various available RDF serializations also enable the Music Ontology to tackle a number of use-cases, e.g. RDFa to embed music data in web pages, JSON-LD to provide such data as part of an API, or RDF/Turtle for easily exchanging large databases of music information.</p>
     <p>for more information on musicontology please visit <a href="http://musicontology.com/">http://musicontology.com/</a> </p>
   </div>
+  <div id="divLoading">
 </div>
 <!--<footer class="login-footer">� copyright MusicRecommender</footer>-->
 
